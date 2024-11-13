@@ -1,6 +1,5 @@
 #!/usr/bin/env ruby
-numbers = (1..20).to_a
-numbers.each do |n|
+(1..20).each do |n|
   case
   when n % 3 == 0 && n % 5 == 0
     puts "FizzBuzz"

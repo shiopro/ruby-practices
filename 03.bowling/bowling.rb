@@ -49,7 +49,7 @@ frames.each_with_index do |frame, index|
              else
                frame.sum
              end
-           # 最終フレーム
+           # 第10フレーム
            else
              frame.sum
            end

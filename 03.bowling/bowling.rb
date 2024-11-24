@@ -19,29 +19,39 @@ shots.each_slice(2) do |s|
   frames << s
 end
 
+# ストライクのスコア計算メソッド
+def calculate_strike_score(frames, index)
+  point = 10
+  next_frame = frames[index + 1]
+  next_next_frame = frames[index + 2]
+  if next_frame[0] == 10
+    point += 10
+    point += if next_next_frame[0] == 10
+               10
+             else
+               next_next_frame[0].to_i
+             end
+  else
+    point += next_frame[0].to_i + next_frame[1].to_i
+  end
+  point
+end
+
 point = 0
 frames.each_with_index do |frame, index|
-  if index < 9
-    # ストライクの場合
-    if frame[0] == 10
-      point += 10
-      next_frame = frames[index + 1]
-      next_next_frame = frames[index + 2]
-      if next_frame[0] == 10
-        point += 10
-        point += next_next_frame[0] = 10 || next_next_frame[0].to_i
-      else
-        point += next_frame[0].to_i + next_frame[1].to_i
-      end
-    # スペアの場合
-    elsif frame.sum == 10
-      point += 10 + frames[index + 1][0]
-    else
-      point += frame.sum
-    end
-  # 最終フレーム
-  else
-    point += frame.sum
-  end
+  point += if index < 9
+             # ストライクの場合
+             if frame[0] == 10
+               calculate_strike_score(frames, index)
+             # スペアの場合
+             elsif frame.sum == 10
+               10 + frames[index + 1][0]
+             else
+               frame.sum
+             end
+           # 最終フレーム
+           else
+             frame.sum
+           end
 end
 puts point

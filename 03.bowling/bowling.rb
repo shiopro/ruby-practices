@@ -14,44 +14,48 @@ scores.each do |s|
   end
 end
 
-frames = []
-shots.each_slice(2) do |s|
-  frames << s
+@frames = shots.each_slice(2).to_a
+
+STRIKE_POINTS = 10
+SPARE_POINTS = 10
+
+def base_score(frame)
+  if frame[0] == 10
+    STRIKE_POINTS
+  elsif frame.sum == 10
+    SPARE_POINTS
+  else
+    frame.sum
+  end
 end
 
-# ストライクのスコア計算メソッド
-def calculate_strike_score(frames, index)
-  point = 10
-  next_frame = frames[index + 1]
-  next_next_frame = frames[index + 2]
-  if next_frame[0] == 10
-    point += 10
-    point += if next_next_frame[0] == 10
-               10
-             else
-               next_next_frame[0].to_i
-             end
+def bonus_score(frame, next_frame, next_next_frame)
+  if frame[0] == 10
+    if next_frame[0] == 10
+      STRIKE_POINTS + next_next_frame[0].to_i
+    else
+      next_frame[0].to_i + next_frame[1].to_i
+    end
+  elsif frame.sum == 10
+    next_frame[0].to_i
   else
-    point += next_frame[0].to_i + next_frame[1].to_i
+    0
+  end
+end
+
+def total_score
+  point = 0
+  @frames.each_with_index do |frame, index|
+    score = base_score(frame)
+    if index < 9
+      next_frame = @frames[index + 1]
+      next_next_frame = @frames[index + 2]
+      bonus = bonus_score(frame, next_frame, next_next_frame)
+      point += score + bonus
+    else
+      point += score
+    end
   end
   point
 end
-
-point = 0
-frames.each_with_index do |frame, index|
-  point += if index < 9
-             # ストライクの場合
-             if frame[0] == 10
-               calculate_strike_score(frames, index)
-             # スペアの場合
-             elsif frame.sum == 10
-               10 + frames[index + 1][0]
-             else
-               frame.sum
-             end
-           # 第10フレーム
-           else
-             frame.sum
-           end
-end
-puts point
+puts total_score

@@ -14,22 +14,11 @@ scores.each do |s|
   end
 end
 
-@frames = shots.each_slice(2).to_a
+frames = shots.each_slice(2).to_a
 
 STRIKE_POINTS = 10
-SPARE_POINTS = 10
 
-def base_score(frame)
-  if frame[0] == 10
-    STRIKE_POINTS
-  elsif frame.sum == 10
-    SPARE_POINTS
-  else
-    frame.sum
-  end
-end
-
-def bonus_score(frame, next_frame, next_next_frame)
+def strike_spare_score(frame, next_frame, next_next_frame)
   if frame[0] == 10
     if next_frame[0] == 10
       STRIKE_POINTS + next_next_frame[0].to_i
@@ -43,19 +32,19 @@ def bonus_score(frame, next_frame, next_next_frame)
   end
 end
 
-def total_score
+def total_score(frames)
   point = 0
-  @frames.each_with_index do |frame, index|
-    score = base_score(frame)
-    if index < 9
-      next_frame = @frames[index + 1]
-      next_next_frame = @frames[index + 2]
-      bonus = bonus_score(frame, next_frame, next_next_frame)
-      point += score + bonus
-    else
-      point += score
-    end
+  frames.each_with_index do |frame, index|
+    score = frame.sum
+    point += score
+    next if index >= 9
+
+    next_frame = frames[index + 1]
+    next_next_frame = frames[index + 2]
+    bonus = strike_spare_score(frame, next_frame, next_next_frame)
+    point += bonus
   end
   point
 end
-puts total_score
+
+puts total_score(frames)

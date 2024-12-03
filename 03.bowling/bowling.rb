@@ -18,7 +18,7 @@ frames = shots.each_slice(2).to_a
 
 STRIKE_POINTS = 10
 
-def strike_spare_score(frame, next_frame, next_next_frame)
+def bonus_score_except_last_frame(frame, next_frame, next_next_frame)
   if frame[0] == 10
     if next_frame[0] == 10
       STRIKE_POINTS + next_next_frame[0].to_i
@@ -41,7 +41,7 @@ def total_score(frames)
 
     next_frame = frames[index + 1]
     next_next_frame = frames[index + 2]
-    bonus = strike_spare_score(frame, next_frame, next_next_frame)
+    bonus = bonus_score_except_last_frame(frame, next_frame, next_next_frame)
     point += bonus
   end
   point

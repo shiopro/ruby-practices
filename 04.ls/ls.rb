@@ -6,6 +6,10 @@ require 'optparse'
 opt = OptionParser.new
 opt.parse!(ARGV)
 
-def get_directory_contents(directory)
-  Dir.children(directory).sort
+def get_directory_contents
+  directory = "."
+  files = Dir.children(directory).sort
+  puts files
 end
+
+puts get_directory_contents

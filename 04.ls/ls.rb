@@ -6,8 +6,8 @@ require 'optparse'
 opt = OptionParser.new
 opt.parse!(ARGV)
 
-def get_directory_contents
-  directory = "."
+def directory_contents
+  directory = '.'
   Dir.children(directory).sort
 end
 
@@ -26,5 +26,5 @@ def display_in_columns(files, max_columns = 3)
   end
 end
 
-files = get_directory_contents
+files = directory_contents
 display_in_columns(files)

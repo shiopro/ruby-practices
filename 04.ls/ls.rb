@@ -8,8 +8,23 @@ opt.parse!(ARGV)
 
 def get_directory_contents
   directory = "."
-  files = Dir.children(directory).sort
-  puts files
+  Dir.children(directory).sort
 end
 
-puts get_directory_contents
+def display_in_columns(files, max_columns = 3)
+  max_length = files.map(&:length).max || 0
+  column_width = max_length + 2
+
+  rows = (files.size.to_f / max_columns).ceil
+  rows.times do |row|
+    line = []
+    max_columns.times do |col|
+      index = row + col * rows
+      line << (files[index] || '').ljust(column_width)
+    end
+    puts line.join
+  end
+end
+
+files = get_directory_contents
+display_in_columns(files)

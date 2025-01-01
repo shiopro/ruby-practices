@@ -8,7 +8,7 @@ opt.parse!(ARGV)
 
 def directory_contents
   directory = '.'
-  Dir.children(directory).sort
+  Dir.children(directory).reject { |file| file.start_with?('.') }.sort
 end
 
 def display_in_columns(files, max_columns = 3)

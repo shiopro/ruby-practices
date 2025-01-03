@@ -17,10 +17,9 @@ def display_in_columns(files, max_columns = 3)
 
   rows = (files.size.to_f / max_columns).ceil
   rows.times do |row|
-    line = []
-    max_columns.times do |col|
+    line = Array.new(max_columns) do |col|
       index = row + col * rows
-      line << (files[index] || '').ljust(column_width)
+      (files[index] || '').ljust(column_width)
     end
     puts line.join
   end

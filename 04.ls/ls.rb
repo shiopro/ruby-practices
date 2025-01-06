@@ -7,8 +7,7 @@ opt = OptionParser.new
 opt.parse!(ARGV)
 
 def directory_contents
-  directory = '.'
-  Dir.entries(directory).reject { |file| file.start_with?('.') }.sort
+  Dir.entries('.').reject { |file| file.start_with?('.') }.sort
 end
 
 def display_in_columns(files, max_columns = 3)

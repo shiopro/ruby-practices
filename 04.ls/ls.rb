@@ -4,6 +4,11 @@
 require 'optparse'
 
 opt = OptionParser.new
+options = {}
+opt.on("-a", "--all") do
+  options[:all] = true
+end
+
 opt.parse!(ARGV)
 
 def directory_contents

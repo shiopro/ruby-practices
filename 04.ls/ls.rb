@@ -11,8 +11,12 @@ end
 
 opt.parse!(ARGV)
 
-def directory_contents
-  Dir.entries('.').reject { |file| file.start_with?('.') }.sort
+def directory_contents(show_all: false)
+  if show_all
+    Dir.entries('.').sort
+  else
+    Dir.entries('.').reject { |file| file.start_with?('.') }.sort
+  end
 end
 
 def display_in_columns(files, max_columns = 3)
@@ -29,5 +33,5 @@ def display_in_columns(files, max_columns = 3)
   end
 end
 
-files = directory_contents
+files = directory_contents(show_all: options[:all])
 display_in_columns(files)

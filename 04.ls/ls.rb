@@ -5,7 +5,7 @@ require 'optparse'
 
 opt = OptionParser.new
 options = {}
-opt.on("-a", "--all") do
+opt.on('-a', '--all') do
   options[:all] = true
 end
 

@@ -21,6 +21,10 @@ def directory_contents(show_all: false)
   filenames.sort
 end
 
+def reverse_filenames(filenames, reverse: false)
+  reverse ? filenames.reverse : filenames
+end
+
 def display_in_columns(files, max_columns = 3)
   max_length = files.map(&:length).max || 0
   column_width = max_length + 2

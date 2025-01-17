@@ -40,4 +40,5 @@ def display_in_columns(files, max_columns = 3)
 end
 
 files = directory_contents(show_all: options[:all])
-display_in_columns(files)
+sorted_files = reverse_filenames(files, reverse: options[:reverse])
+display_in_columns(sorted_files)

@@ -9,12 +9,20 @@ opt.on('-a', '--all') do
   options[:all] = true
 end
 
+opt.on('-r', '--reverse') do
+  options[:reverse] = true
+end
+
 opt.parse!(ARGV)
 
 def directory_contents(show_all: false)
   filenames = Dir.entries('.')
   filenames.reject! { |file| file.start_with?('.') } unless show_all
   filenames.sort
+end
+
+def reverse_filenames(filenames, reverse: false)
+  reverse ? filenames.reverse : filenames
 end
 
 def display_in_columns(files, max_columns = 3)
@@ -32,4 +40,5 @@ def display_in_columns(files, max_columns = 3)
 end
 
 files = directory_contents(show_all: options[:all])
-display_in_columns(files)
+sorted_files = reverse_filenames(files, reverse: options[:reverse])
+display_in_columns(sorted_files)

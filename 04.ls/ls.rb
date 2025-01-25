@@ -13,6 +13,10 @@ opt.on('-r', '--reverse') do
   options[:reverse] = true
 end
 
+opt.on('-l', '--long') do
+  options[:long] = true
+end
+
 opt.parse!(ARGV)
 
 def directory_contents(show_all: false)

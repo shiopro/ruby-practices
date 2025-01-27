@@ -29,6 +29,19 @@ def reverse_filenames(filenames, reverse: false)
   reverse ? filenames.reverse : filenames
 end
 
+def file_details(filename)
+  stat = File.stat(filename)
+  {
+    permissions: stat.mode.to_s(8),
+    links: stat.nlink,
+    user: stat.uid,
+    group: stat.gid,
+    size: stat.size,
+    modified_time: stat.mtime.strftime('%m %d %H %m'),
+    name: filename
+  }
+end
+
 def display_in_columns(files, max_columns = 3)
   max_length = files.map(&:length).max || 0
   column_width = max_length + 2

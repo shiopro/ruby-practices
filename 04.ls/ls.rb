@@ -2,6 +2,7 @@
 # frozen_string_literal: true
 
 require 'optparse'
+require 'etc'
 
 opt = OptionParser.new
 options = {}
@@ -34,8 +35,8 @@ def file_details(filename)
   {
     permissions: stat.mode.to_s(8),
     links: stat.nlink,
-    user: stat.uid,
-    group: stat.gid,
+    user: Etc.getpwuid(stat.uid).name,
+    group: Etc.getgrgid(stat.gid).name,
     size: stat.size,
     modified_time: stat.mtime.strftime('%m %d %H %m'),
     name: filename

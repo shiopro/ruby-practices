@@ -43,6 +43,23 @@ def file_details(filename)
   }
 end
 
+def format_permissions(mode)
+  permissions = mode.to_s(8)[-3..].chars.map do |digit|
+  types = { 'file' => '-', 'directory' => 'd' }
+  type = types[File.ftype('.') || '-']
+  {
+    '0' => '---',
+    '1' => '--x',
+    '2' => '-w-',
+    '3' => '-wx',
+    '4' => 'r--',
+    '5' => 'r-x',
+    '6' => 'rw-',
+    '7' => 'rwx'
+  }[digit]
+  end.join
+end
+
 def display_in_columns(files, max_columns = 3)
   max_length = files.map(&:length).max || 0
   column_width = max_length + 2

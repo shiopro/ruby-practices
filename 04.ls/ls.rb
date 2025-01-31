@@ -33,7 +33,7 @@ end
 def file_details(filename)
   stat = File.stat(filename)
   {
-    permissions: stat.mode.to_s(8),
+    permissions: format_permissions(stat.mode),
     links: stat.nlink,
     user: Etc.getpwuid(stat.uid).name,
     group: Etc.getgrgid(stat.gid).name,

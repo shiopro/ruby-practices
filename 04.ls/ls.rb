@@ -32,13 +32,15 @@ end
 
 def file_details(filename)
   stat = File.stat(filename)
+  modified_time = stat.mtime.strftime('%-m %-d %H:%M')
+  modified_time = modified_time.split.map { |part| part.rjust(2, ' ') }.join(' ')
   {
     permissions: format_permissions(stat.mode, filename),
     links: stat.nlink,
     user: Etc.getpwuid(stat.uid).name,
     group: Etc.getgrgid(stat.gid).name,
     size: stat.size,
-    modified_time: stat.mtime.strftime('%-m %-d %H:%M'),
+    modified_time: modified_time,
     name: filename
   }
 end
@@ -67,9 +69,20 @@ end
 
 def display_in_columns(files, long: false)
   if long
-    files.each do |file|
-      details = file_details(file)
-      puts "#{details[:permissions]} #{details[:links]} #{details[:user]} #{details[:group]} #{details[:size]} #{details[:modified_time]} #{details[:name]}"
+    details_list = files.map { |file| file_details(file) }
+    max_width = {
+      permissions: 10,
+      links: details_list.map { |d| d[:links].to_s.length }.max,
+      user: details_list.map { |d| d[:user].to_s.length }.max,
+      group: details_list.map { |d| d[:group].length }.max,
+      size: details_list.map { |d| d[:size].to_s.length }.max,
+      modified_time: 12
+    }
+
+    details_list.each do |details|
+      puts "#{details[:permissions]}  #{details[:links].to_s.rjust(max_width[:links])} " \
+           "#{details[:user].ljust(max_width[:user])}  #{details[:group].ljust(max_width[:group])}  " \
+           "#{details[:size].to_s.rjust(max_width[:size])} #{details[:modified_time]} #{details[:name]}"
     end
   else
     max_length = files.map(&:length).max || 0

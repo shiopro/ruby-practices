@@ -33,7 +33,7 @@ end
 def file_details(filename)
   stat = File.stat(filename)
   {
-    permissions: format_permissions(stat.mode),
+    permissions: format_permissions(stat.mode, filename),
     links: stat.nlink,
     user: Etc.getpwuid(stat.uid).name,
     group: Etc.getgrgid(stat.gid).name,
@@ -43,21 +43,26 @@ def file_details(filename)
   }
 end
 
-def format_permissions(mode)
+def format_permissions(mode, filename)
+  type = case File.ftype(filename)
+         when 'directory' then 'd'
+         when 'file' then '-'
+         when 'link' then 'l'
+         end
+
   permissions = mode.to_s(8)[-3..].chars.map do |digit|
-  types = { 'file' => '-', 'directory' => 'd' }
-  type = types[File.ftype('.') || '-']
-  {
-    '0' => '---',
-    '1' => '--x',
-    '2' => '-w-',
-    '3' => '-wx',
-    '4' => 'r--',
-    '5' => 'r-x',
-    '6' => 'rw-',
-    '7' => 'rwx'
-  }[digit]
+    {
+      '0' => '---',
+      '1' => '--x',
+      '2' => '-w-',
+      '3' => '-wx',
+      '4' => 'r--',
+      '5' => 'r-x',
+      '6' => 'rw-',
+      '7' => 'rwx'
+    }[digit]
   end.join
+  type + permissions
 end
 
 def display_in_columns(files, long: false)

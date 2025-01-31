@@ -38,7 +38,7 @@ def file_details(filename)
     user: Etc.getpwuid(stat.uid).name,
     group: Etc.getgrgid(stat.gid).name,
     size: stat.size,
-    modified_time: stat.mtime.strftime('%m %d %H %m'),
+    modified_time: stat.mtime.strftime('%m %d %H %M'),
     name: filename
   }
 end
@@ -60,15 +60,22 @@ def format_permissions(mode)
   end.join
 end
 
-def display_in_columns(files, max_columns = 3)
-  max_length = files.map(&:length).max || 0
-  column_width = max_length + 2
+def display_in_columns(files, long: false)
+  if long
+    files.each do |file|
+      details = file_details(file)
+      puts "#{details[:permissions]} #{details[:links]} #{details[:user]} #{details[:group]} #{details[:size]} #{details[:modified_time]} #{details[:name]}"
+    end
+  else
+    max_length = files.map(&:length).max || 0
+    column_width = max_length + 2
 
-  rows = (files.size.to_f / max_columns).ceil
-  rows.times do |row|
-    line = Array.new(max_columns) do |col|
-      index = row + col * rows
-      (files[index] || '').ljust(column_width)
+    rows = (files.size.to_f / max_columns).ceil
+    rows.times do |row|
+      line = Array.new(max_columns) do |col|
+        index = row + col * rows
+        (files[index] || '').ljust(column_width)
+      end
     end
     puts line.join
   end
@@ -76,4 +83,4 @@ end
 
 files = directory_contents(show_all: options[:all])
 sorted_files = reverse_filenames(files, reverse: options[:reverse])
-display_in_columns(sorted_files)
+display_in_columns(sorted_files, long: options[:long])

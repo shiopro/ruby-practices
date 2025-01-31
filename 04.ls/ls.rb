@@ -38,7 +38,7 @@ def file_details(filename)
     user: Etc.getpwuid(stat.uid).name,
     group: Etc.getgrgid(stat.gid).name,
     size: stat.size,
-    modified_time: stat.mtime.strftime('%m %d %H %M'),
+    modified_time: stat.mtime.strftime('%-m %-d %H:%M'),
     name: filename
   }
 end

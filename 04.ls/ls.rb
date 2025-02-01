@@ -46,11 +46,13 @@ def file_details(filename)
 end
 
 def format_permissions(mode, filename)
-  type = case File.ftype(filename)
-         when 'directory' then 'd'
-         when 'file' then '-'
-         when 'link' then 'l'
-         end
+  file_type = {
+    'directory' => 'd',
+    'file' => '-',
+    'link' => 'l'
+  }
+
+  type = file_type[File.ftype(filename)]
 
   permissions = mode.to_s(8)[-3..].chars.map do |digit|
     {
@@ -71,7 +73,7 @@ def display_in_columns(files, long: false)
   if long
     total_blocks = files.sum { |file| File.stat(file).blocks }
     puts "total #{total_blocks}"
-    
+
     details_list = files.map { |file| file_details(file) }
     max_width = {
       permissions: 10,

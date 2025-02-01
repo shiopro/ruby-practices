@@ -90,13 +90,13 @@ def display_in_columns_long(files)
   end
 end
 
-def display_in_columns(files)
+def display_in_columns(files, max_columns = 3)
   max_length = files.map(&:length).max || 0
   column_width = max_length + 2
 
-  rows = (files.size.to_f / max_length).ceil
+  rows = (files.size.to_f / max_columns).ceil
   rows.times do |row|
-    line = Array.new(max_length) do |col|
+    line = Array.new(max_columns) do |col|
       index = row + col * rows
       (files[index] || '').ljust(column_width)
     end

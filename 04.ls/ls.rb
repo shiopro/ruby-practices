@@ -69,6 +69,9 @@ end
 
 def display_in_columns(files, long: false)
   if long
+    total_blocks = files.sum { |file| File.stat(file).blocks }
+    puts "total #{total_blocks}"
+    
     details_list = files.map { |file| file_details(file) }
     max_width = {
       permissions: 10,

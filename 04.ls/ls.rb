@@ -45,27 +45,27 @@ def file_details(filename)
   }
 end
 
+DIGIT = {
+  '0' => '---',
+  '1' => '--x',
+  '2' => '-w-',
+  '3' => '-wx',
+  '4' => 'r--',
+  '5' => 'r-x',
+  '6' => 'rw-',
+  '7' => 'rwx'
+}.freeze
+
+FILETYPE = {
+  'directory' => 'd',
+  'file' => '-',
+  'link' => 'l'
+}.freeze
+
 def format_permissions(mode, filename)
-  file_type = {
-    'directory' => 'd',
-    'file' => '-',
-    'link' => 'l'
-  }
+  type = FILETYPE[File.ftype(filename)]
 
-  type = file_type[File.ftype(filename)]
-
-  permissions = mode.to_s(8)[-3..].chars.map do |digit|
-    {
-      '0' => '---',
-      '1' => '--x',
-      '2' => '-w-',
-      '3' => '-wx',
-      '4' => 'r--',
-      '5' => 'r-x',
-      '6' => 'rw-',
-      '7' => 'rwx'
-    }[digit]
-  end.join
+  permissions = mode.to_s(8)[-3..].chars.map { |digit| DIGIT[digit] }.join
   type + permissions
 end
 

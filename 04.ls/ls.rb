@@ -6,6 +6,7 @@ require 'etc'
 
 opt = OptionParser.new
 options = {}
+
 opt.on('-a', '--all') do
   options[:all] = true
 end

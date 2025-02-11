@@ -32,3 +32,9 @@ end
 def count_words(text)
   text.split(/\s+/).size
 end
+
+# バイト数を取得
+def count_bytes(text)
+  text.bytesize
+end
+

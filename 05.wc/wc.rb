@@ -27,3 +27,8 @@ options = { lines: true, words: true, bytes: true } if options.empty?
 def count_lines(text)
   text.lines.count
 end
+
+# 単語数を取得
+def count_words(text)
+  text.split(/\s+/).size
+end

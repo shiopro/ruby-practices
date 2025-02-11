@@ -22,3 +22,8 @@ opt.parse!(ARGV)
 
 # オプション指定がない場合、すべてのオプションをtrueに設定
 options = { lines: true, words: true, bytes: true } if options.empty?
+
+# 行数をカウントして取得
+def count_lines(text)
+  text.lines.count
+end

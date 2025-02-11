@@ -38,3 +38,15 @@ def count_bytes(text)
   text.bytesize
 end
 
+# テキスト情報を処理して結果を取得
+def process_text(text, options, filename = nil)
+  counts = {
+  lines: count_lines(text),
+  words: count_words(text),
+  bytes: count_bytes(text)
+  }
+
+  results = options.keys.map { |key| counts[key].to_s.rjust(7) if options[key] }
+  results << filename if filename
+  puts results.join(' ')
+end

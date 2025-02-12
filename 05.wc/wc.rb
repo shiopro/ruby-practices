@@ -50,3 +50,14 @@ def process_text(text, options, filename = nil)
   results << filename if filename
   puts results.join(' ')
 end
+
+# 標準入力またはコマンドライン引数から読み込めるようにする
+if ARGV.empty?
+  text = $stdin.read
+  process_text(text, options)
+else
+  ARGV.each do |filename|
+    text = File.read(filename)
+    process_text(text, options, filename)
+  end
+end

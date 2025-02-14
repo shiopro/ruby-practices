@@ -29,10 +29,15 @@ def main(options)
     text = $stdin.read
     process_text(text, options)
   else
-    ARGV.each do |filename|
+    totals = { lines: 0, words: 0, bytes: 0 }
+    files = ARGV
+
+    files.each do |filename|
       text = File.read(filename)
-      process_text(text, options, filename)
+      process_text(text, options, filename, totals)
     end
+
+    total_counts(files, options, totals) if files.size > 1
   end
 end
 
@@ -52,16 +57,27 @@ def count_bytes(text)
 end
 
 # テキスト情報を処理して結果を取得
-def process_text(text, options, filename = nil)
+def process_text(text, options, filename = nil, totals)
   counts = {
     lines: count_lines(text),
     words: count_words(text),
     bytes: count_bytes(text)
   }
 
+  # 合計用のカウントを加算
+  totals[:lines] += counts[:lines]
+  totals[:words] += counts[:words]
+  totals[:bytes] += counts[:bytes]
+
   results = options.keys.map { |key| counts[key].to_s.rjust(7) if options[key] }
   results << filename if filename
   puts results.join(' ')
 end
 
+# 合計値の表示
+def total_counts(files, options, totals)
+  total_result = options.keys.map { |key| totals[key].to_s.rjust(7) if options[key] }
+  total_result << "total"
+  puts total_result.join(' ')
+end
 main(options)

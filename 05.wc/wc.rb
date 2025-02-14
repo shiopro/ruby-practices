@@ -23,6 +23,19 @@ opt.parse!(ARGV)
 # オプション指定がない場合、すべてのオプションをtrueに設定
 options = { lines: true, words: true, bytes: true } if options.empty?
 
+# 標準入力またはコマンドライン引数から読み込めるようにする
+def main(options)
+  if ARGV.empty?
+    text = $stdin.read
+    process_text(text, options)
+  else
+    ARGV.each do |filename|
+      text = File.read(filename)
+      process_text(text, options, filename)
+    end
+  end
+end
+
 # 行数をカウントして取得
 def count_lines(text)
   text.lines.count
@@ -51,13 +64,4 @@ def process_text(text, options, filename = nil)
   puts results.join(' ')
 end
 
-# 標準入力またはコマンドライン引数から読み込めるようにする
-if ARGV.empty?
-  text = $stdin.read
-  process_text(text, options)
-else
-  ARGV.each do |filename|
-    text = File.read(filename)
-    process_text(text, options, filename)
-  end
-end
+main(options)

@@ -34,7 +34,7 @@ def main(options)
 
     files.each do |filename|
       text = File.read(filename)
-      process_text(text, options, filename, totals)
+      process_text(text, options, totals, filename)
     end
 
     total_counts(files, options, totals) if files.size > 1

@@ -25,11 +25,11 @@ options = { lines: true, words: true, bytes: true } if options.empty?
 
 # 標準入力またはコマンドライン引数から読み込めるようにする
 def main(options)
+  totals = { lines: 0, words: 0, bytes: 0 }
   if ARGV.empty?
     text = $stdin.read
-    process_text(text, options)
+    process_text(text, options, totals)
   else
-    totals = { lines: 0, words: 0, bytes: 0 }
     files = ARGV
 
     files.each do |filename|
@@ -80,4 +80,5 @@ def total_counts(files, options, totals)
   total_result << "total"
   puts total_result.join(' ')
 end
+
 main(options)

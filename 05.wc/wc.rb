@@ -57,7 +57,7 @@ def count_bytes(text)
 end
 
 # テキスト情報を処理して結果を取得
-def process_text(text, options, filename = nil, totals)
+def process_text(text, options, totals, filename = nil)
   counts = {
     lines: count_lines(text),
     words: count_words(text),

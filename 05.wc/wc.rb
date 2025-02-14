@@ -30,14 +30,12 @@ def main(options)
     text = $stdin.read
     process_text(text, options, totals)
   else
-    files = ARGV
-
-    files.each do |filename|
+    ARGV.each do |filename|
       text = File.read(filename)
       process_text(text, options, totals, filename)
     end
 
-    total_counts(files, options, totals) if files.size > 1
+    total_counts(options, totals) if ARGV.size > 1
   end
 end
 
@@ -75,7 +73,7 @@ def process_text(text, options, totals, filename = nil)
 end
 
 # 合計値の表示
-def total_counts(files, options, totals)
+def total_counts(options, totals)
   total_result = options.keys.map { |key| totals[key].to_s.rjust(7) if options[key] }
   total_result << "total"
   puts total_result.join(' ')

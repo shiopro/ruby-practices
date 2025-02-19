@@ -39,27 +39,12 @@ def main(options)
   end
 end
 
-# 行数をカウントして取得
-def count_lines(text)
-  text.lines.count
-end
-
-# 単語数を取得
-def count_words(text)
-  text.split(/\s+/).size
-end
-
-# バイト数を取得
-def count_bytes(text)
-  text.bytesize
-end
-
 # テキスト情報を処理して結果を取得
 def process_text(text, options, totals, filename = nil)
   counts = {
-    lines: count_lines(text),
-    words: count_words(text),
-    bytes: count_bytes(text)
+    lines: text.lines.count,
+    words: text.lines.sum { |line| line.split(/\s+/).reject(&:empty?).count },
+    bytes: text.bytesize
   }
 
   # 合計用のカウントを加算

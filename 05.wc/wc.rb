@@ -3,39 +3,43 @@
 
 require 'optparse'
 
-opt = OptionParser.new
-options = {}
+def fetch_options
+  opt = OptionParser.new
+  options = {}
 
-opt.on('-l', '--lines') do
-  options[:lines] = true
+  opt.on('-l', '--lines') do
+    options[:lines] = true
+  end
+
+  opt.on('-w', '--words') do
+    options[:words] = true
+  end
+
+  opt.on('-c', '--bytes') do
+    options[:bytes] = true
+  end
+
+  opt.parse!(ARGV)
+  filenames = ARGV.dup
+  options = { lines: true, words: true, bytes: true } if options.empty?
+
+  return options, filenames
 end
-
-opt.on('-w', '--words') do
-  options[:words] = true
-end
-
-opt.on('-c', '--bytes') do
-  options[:bytes] = true
-end
-
-opt.parse!(ARGV)
-
-# オプション指定がない場合、すべてのオプションをtrueに設定
-options = { lines: true, words: true, bytes: true } if options.empty?
 
 # 標準入力またはコマンドライン引数から読み込めるようにする
-def main(options)
+def main
   totals = { lines: 0, words: 0, bytes: 0 }
-  if ARGV.empty?
+  options, filenames = fetch_options
+  if filenames.empty?
     text = $stdin.read
     process_text(text, options, totals)
   else
-    ARGV.each do |filename|
+    filenames.each do |filename|
       text = File.read(filename)
       process_text(text, options, totals, filename)
     end
 
-    total_counts(options, totals) if ARGV.size > 1
+    total_counts(options, totals) if filenames.size > 1
   end
 end
 
@@ -64,4 +68,4 @@ def total_counts(options, totals)
   puts total_result.join(' ')
 end
 
-main(options)
+main

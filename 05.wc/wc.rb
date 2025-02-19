@@ -23,7 +23,7 @@ def fetch_options
   filenames = ARGV.dup
   options = { lines: true, words: true, bytes: true } if options.empty?
 
-  return options, filenames
+  [options, filenames]
 end
 
 # 標準入力またはコマンドライン引数から読み込めるようにする

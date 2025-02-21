@@ -3,6 +3,8 @@
 
 require 'optparse'
 
+OPTION_KEYS = %i[lines words bytes].freeze
+
 def fetch_options
   opt = OptionParser.new
   options = {}
@@ -56,7 +58,7 @@ def process_text(text, options, totals, filename = nil)
   totals[:words] += counts[:words]
   totals[:bytes] += counts[:bytes]
 
-  results = options.keys.map { |key| counts[key].to_s.rjust(7) if options[key] }
+  results = OPTION_KEYS.map { |key| counts[key].to_s.rjust(7) if options[key] }
   results << filename if filename
   puts results.join(' ')
 end

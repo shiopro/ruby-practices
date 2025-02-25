@@ -65,7 +65,7 @@ end
 
 # 合計値の表示
 def total_counts(options, totals)
-  total_result = options.keys.map { |key| totals[key].to_s.rjust(7) if options[key] }
+  total_result = OPTION_KEYS.map { |key| totals[key].to_s.rjust(7) if options[key] }
   total_result << 'total'
   puts total_result.join(' ')
 end

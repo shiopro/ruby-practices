@@ -4,15 +4,8 @@
 require_relative 'game'
 
 scores = ARGV[0].split(',')
-shots = []
-
-scores.each do |s|
-  if s == 'X'
-    shots << 10
-    shots << 0
-  else
-    shots << s.to_i
-  end
+shots = scores.flat_map do |s|
+  s == 'X' ? [10, 0] : s.to_i
 end
 
 frames = []

@@ -8,19 +8,19 @@ class Game
   end
 
   def total_score
-    point = 0
-    @frames.each_with_index do |frame, index|
-      point += frame.score
-      next if index >= 9
+    @frames.each_with_index.sum do |frame, index|
+      point = frame.score
 
-      next_frame = @frames[index + 1]
-      next_next_frame = @frames[index + 2]
+      if index < 9
+        next_frame = @frames[index + 1]
+        next_next_frame = @frames[index + 2]
 
-      if next_frame && (frame.strike? || frame.spare?)
-        bonus = frame.bonus_score_except_last_frame(frame, next_frame, next_next_frame)
-        point += bonus
+        if next_frame && (frame.strike? || frame.spare?)
+          bonus = frame.bonus_score_except_last_frame(frame, next_frame, next_next_frame)
+          point += bonus
+        end
       end
+      point
     end
-    point
   end
 end

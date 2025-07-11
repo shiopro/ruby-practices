@@ -8,16 +8,23 @@ class Game
   end
 
   def bonus_score_except_last_frame(frame, next_frame, next_next_frame)
-    if frame.strike?
-      if next_frame&.strike?
-        10 + (next_frame ? next_next_frame.first_shot.score : 0)
-      else
-        next_frame.first_shot.score + next_frame.second_shot.score
-      end
-    elsif frame.spare?
-      next_frame.first_shot.score
+    return 0 unless next_frame
+    return spare_bonus(next_frame) if frame.spare?
+    return strike_bonus(next_frame, next_next_frame) if frame.strike?
+
+    0
+  end
+
+  def spare_bonus(next_frame)
+    next_frame.first_shot.score
+  end
+
+  def strike_bonus(next_frame, next_next_frame)
+    if next_frame.strike?
+      next_shot = next_next_frame&.first_shot&.score || next_frame.second_shot.score || 0
+      10 + next_shot
     else
-      0
+      next_frame.first_shot.score + next_frame.second_shot.score
     end
   end
 
@@ -29,8 +36,11 @@ class Game
 
       next_frame = @frames[index + 1]
       next_next_frame = @frames[index + 2]
-      bonus = bonus_score_except_last_frame(frame, next_frame, next_next_frame)
-      point += bonus
+
+      if next_frame && (frame.strike? || frame.spare?)
+        bonus = bonus_score_except_last_frame(frame, next_frame, next_next_frame)
+        point += bonus
+      end
     end
     point
   end

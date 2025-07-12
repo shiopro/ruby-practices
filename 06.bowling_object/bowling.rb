@@ -15,13 +15,13 @@ def build_frames(shots)
       frame = Frame.new(10, 0)
       i += 1
     else
-      frame = Frame.new(shots[i], shots[i + 1])
+      frame = Frame.new(*shots[i, 2])
       i += 2
     end
     frame
   end
 
-  frames << Frame.new(shots[i], shots[i + 1], shots[i + 2])
+  frames << Frame.new(*shots[i, 3])
   frames
 end
 

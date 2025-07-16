@@ -38,11 +38,11 @@ class Frame
   def strike_bonus(next_frame, next_next_frame)
     first_score = next_frame.first_shot.score
 
-    if next_frame.strike?
-      next_shot = next_next_frame&.first_shot&.score || next_frame.second_shot.score || 0
-      first_score + next_shot
-    else
-      first_score + next_frame.second_shot.score
-    end
+    first_score + if next_frame.strike?
+                    next_shot = next_next_frame&.first_shot&.score || next_frame.second_shot.score || 0
+                    next_shot
+                  else
+                    next_frame.second_shot.score
+                  end
   end
 end

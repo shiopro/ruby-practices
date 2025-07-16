@@ -14,7 +14,7 @@ class Game
       if frame.strike? || frame.spare?
         next_frame = @frames[index + 1]
         next_next_frame = @frames[index + 2]
-        bonus = frame.bonus_score_except_last_frame(frame, next_frame, next_next_frame)
+        bonus = frame.bonus_score(frame, next_frame, next_next_frame)
         point += bonus
       end
       point

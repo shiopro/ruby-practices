@@ -23,7 +23,7 @@ class Frame
     [@first_shot, @second_shot].map(&:score).sum == 10 && !strike?
   end
 
-  def bonus_score_except_last_frame(frame, next_frame, next_next_frame)
+  def bonus_score(frame, next_frame, next_next_frame)
     return 0 unless next_frame
     return spare_bonus(next_frame) if frame.spare?
     return strike_bonus(next_frame, next_next_frame) if frame.strike?

@@ -5,7 +5,7 @@ class LongFormat
     @files = files
   end
 
-  def display_in_columns_long
+  def display
     total_blocks = @files.sum { |file| File.stat(file).blocks }
     puts "total #{total_blocks}"
 

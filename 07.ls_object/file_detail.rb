@@ -20,6 +20,8 @@ class FileDetail
     'link' => 'l'
   }.freeze
 
+  private_constant :DIGIT, :FILETYPE
+
   def initialize(filename)
     @filename = filename
     @stat = File.stat(@filename)

@@ -2,7 +2,7 @@
 
 require 'optparse'
 require_relative 'file_lister'
-require_relative 'reverse'
+require_relative 'column_formatter'
 require_relative 'file_details'
 require_relative 'long_format'
 
@@ -23,15 +23,13 @@ end
 
 opt.parse!(ARGV)
 
-lister = FileLister.new(show_all: options[:all])
-files = lister.directory_contents
-
-reverser = Reverse.new(files, reverse: options[:reverse])
-files = reverser.reverse_filenames
+lister = FileLister.new(show_all: options[:all], reverse: options[:reverse])
+files = lister.list_files
 
 if options[:long]
   formatter = LongFormat.new(files)
   formatter.display_in_columns_long
 else
-  lister.display_in_columns(files)
+  lister = ColumnFormatter.new(files)
+  lister.display_in_columns
 end

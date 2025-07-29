@@ -2,7 +2,7 @@
 
 require 'etc'
 
-class FileDetails
+class FileDetail
   DIGIT = {
     '0' => '---',
     '1' => '--x',

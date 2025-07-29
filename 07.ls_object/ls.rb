@@ -3,7 +3,7 @@
 require 'optparse'
 require_relative 'file_lister'
 require_relative 'column_formatter'
-require_relative 'file_details'
+require_relative 'file_detail'
 require_relative 'long_format'
 
 opt = OptionParser.new

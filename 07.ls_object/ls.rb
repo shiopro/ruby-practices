@@ -24,12 +24,12 @@ end
 opt.parse!(ARGV)
 
 lister = FileLister.new(show_all: options[:all], reverse: options[:reverse])
-files = lister.list_files
+files = lister.files
 
 if options[:long]
   formatter = LongFormat.new(files)
   formatter.display
 else
   lister = ColumnFormatter.new(files)
-  lister.display_in_columns
+  lister.output_columns
 end

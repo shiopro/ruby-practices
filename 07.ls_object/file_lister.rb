@@ -7,7 +7,7 @@ class FileLister
     @reverse = reverse
   end
 
-  def list_files
+  def files
     filenames = Dir.entries(@path)
     filenames.reject! { |file| file.start_with?('.') } unless @show_all
     sorted = filenames.sort

@@ -39,6 +39,8 @@ class FileDetail
     }
   end
 
+  private
+
   def format_permissions
     type = FILETYPE[File.ftype(@filename)]
 

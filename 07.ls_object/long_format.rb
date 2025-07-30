@@ -9,7 +9,7 @@ class LongFormat
     total_blocks = @files.sum { |file| File.stat(file).blocks }
     puts "total #{total_blocks}"
 
-    details_list = @files.map { |file| FileDetail.new(file).details }
+    details_list = @files.map { |file| FileDetail.new(file).to_hash }
     max_width = {
       permissions: 10,
       links: details_list.map { |d| d[:links].to_s.length }.max,

@@ -27,7 +27,7 @@ class FileDetail
     @stat = File.stat(@filename)
   end
 
-  def details
+  def to_hash
     {
       permissions: format_permissions,
       links: @stat.nlink,

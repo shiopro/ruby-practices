@@ -9,20 +9,20 @@ class LongFormat
     total_blocks = @files.sum { |file| File.stat(file).blocks }
     puts "total #{total_blocks}"
 
-    details_list = @files.map { |file| FileDetail.new(file).to_hash }
+    details = @files.map { |file| FileDetail.new(file).to_hash }
     max_width = {
       permissions: 10,
-      links: details_list.map { |d| d[:links].to_s.length }.max,
-      user: details_list.map { |d| d[:user].to_s.length }.max,
-      group: details_list.map { |d| d[:group].length }.max,
-      size: details_list.map { |d| d[:size].to_s.length }.max,
+      links: details.map { |d| d[:links].to_s.length }.max,
+      user: details.map { |d| d[:user].to_s.length }.max,
+      group: details.map { |d| d[:group].length }.max,
+      size: details.map { |d| d[:size].to_s.length }.max,
       modified_time: 12
     }
 
-    details_list.each do |details|
-      puts  "#{details[:permissions]}  #{details[:links].to_s.rjust(max_width[:links])} " \
-            "#{details[:user].ljust(max_width[:user])}  #{details[:group].ljust(max_width[:group])}  " \
-            "#{details[:size].to_s.rjust(max_width[:size])} #{details[:modified_time]} #{details[:name]}"
+    details.each do |detail|
+      puts  "#{detail[:permissions]}  #{detail[:links].to_s.rjust(max_width[:links])} " \
+            "#{detail[:user].ljust(max_width[:user])}  #{detail[:group].ljust(max_width[:group])}  " \
+            "#{detail[:size].to_s.rjust(max_width[:size])} #{detail[:modified_time]} #{detail[:name]}"
     end
   end
 end

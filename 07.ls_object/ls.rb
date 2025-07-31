@@ -26,10 +26,5 @@ opt.parse!(ARGV)
 lister = FileLister.new(show_all: options[:all], reverse: options[:reverse])
 files = lister.files
 
-if options[:long]
-  formatter = LongFormat.new(files)
-  formatter.display
-else
-  lister = ColumnFormatter.new(files)
-  lister.output_columns
-end
+formatter = options[:long] ? LongFormatter.new(files) : ColumnFormatter.new(files)
+formatter.display

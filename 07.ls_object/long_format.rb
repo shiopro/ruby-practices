@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class LongFormat
+class LongFormatter
   def initialize(files)
     @files = files
   end

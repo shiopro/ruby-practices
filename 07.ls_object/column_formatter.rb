@@ -6,7 +6,7 @@ class ColumnFormatter
     @max_columns = max_columns
   end
 
-  def output_columns
+  def display
     max_length = @files.map(&:length).max || 0
     column_width = max_length + 2
 
